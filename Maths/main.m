@@ -8,12 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import "AdditionQuestion.h"
+#import "InputHandler.h"
+#import "ScoreKeeper.h"
+
+
+
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        char inputChar[225];
+        //char inputChar[225];
         BOOL gameOn = YES;
+        NSString *input;
+        NSInteger R = 0;
+        NSInteger W = 0;
+        
         
         
         while (gameOn) {
@@ -21,13 +30,13 @@ int main(int argc, const char * argv[]) {
             
             AdditionQuestion *Q1 = [[AdditionQuestion alloc]init];
             
-            NSLog(@" The question is %ld + %ld", Q1.number1 , Q1.number2);
-            
-            fgets(inputChar, 225, stdin);
+
             
             
-          
-            NSString *input = [[NSString alloc] initWithUTF8String:inputChar];
+            InputHandler *IH1 = [ [InputHandler alloc ]init];
+            
+            input = [IH1 HandleInput:Q1];
+            
             
             if ( [input isEqualToString:@"quit\n"]){
                 gameOn = NO;
@@ -36,29 +45,38 @@ int main(int argc, const char * argv[]) {
             NSInteger intAns = [input integerValue];
             
             
-            
             input = [input stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            
-            
-            //NSLog(@"The string after Trimming: %@",input);
-            
-            
+
             if ( intAns == Q1.answer){
                 NSLog(@"Right!");
+                R++;
             }
-            else NSLog(@"Wrong!");
-            
-            
+            else {
                 
+            NSLog(@"Wrong!");
+                W++;
+            }
             
-
             
             
             
             
             
         }
+        
+        
+        
+        ScoreKeeper *score1 = [[ScoreKeeper alloc]init];
+        
+        score1.nofright = R;
+        score1.nofwrong = W;
+        
+        [score1 Score];
+        
     }
     return 0;
 }
+
+
+
